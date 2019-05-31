@@ -12,7 +12,7 @@
 
 //Battle ships: Sunk damaged or not touched?
 
-function hasDuplicates(array) {
+function hasDuplicates(attacks) {
   let valuesSoFar = Object.create(null);
   for (let i = 0; i < array.length; ++i) {
       let value = JSON.stringify(array[i]);
@@ -22,6 +22,26 @@ function hasDuplicates(array) {
       valuesSoFar[value] = true;
   }
   return false;
+}
+
+
+function findShips (board) {
+
+  let flatBoard = board.flat();
+  let ships = {};
+  let initialShipLength = 1;
+  let finalShipLength = 1;
+
+  for (let i = 0; i < flatBoard.length; i++) {
+    if(flatBoard[i] != 0 && !ships[flatBoard[i]]) {
+      ships[flatBoard[i]] = [initialShipLength, finalShipLength];     
+    } else if (flatBoard[i] != 0){
+      ships[flatBoard[i]][0]++;
+      ships[flatBoard[i]][1]++;
+    }
+  }
+
+return ships;
 }
 
 
@@ -35,11 +55,7 @@ function battleShips(board, attacks) {
     return  '{status: "failed", reason: "attacks will not contain duplicates."}';
   }
 
-
-  let flatBoard = board.flat();
-  let ships = {};
-  let initialShipLength = 1;
-  let finalShipLength = 1;
+  let ships = findShips(board);
 
   let result = {
     sunk : 0,
@@ -48,19 +64,6 @@ function battleShips(board, attacks) {
     points: 0
   }
 
-  for (let i = 0; i < flatBoard.length; i++) {
-    if(flatBoard[i] != 0 && !ships[flatBoard[i]]) {
-      ships[flatBoard[i]] = [initialShipLength, finalShipLength];     
-    } else if (flatBoard[i] != 0){
-      ships[flatBoard[i]][0]++;
-      ships[flatBoard[i]][1]++;
-    }
-  }
-
-  if(Object.keys(ships).length > 3 || Object.keys(ships).length < 1) {
-     result = '{status: "failed", reason: "There will always be at least 1 boat up to a maximum of 3"}'
-  }
- 
   attacks.forEach(attack => {
     if(board[board.length - attack[1]][attack[0]-1] != 0) {
       ships[board[board.length - attack[1]][attack[0]-1]][1]--;
@@ -86,7 +89,6 @@ function battleShips(board, attacks) {
   }
 
 return result;
-
 }
 
 let arr5=[[0,0,0,2,2,0],
