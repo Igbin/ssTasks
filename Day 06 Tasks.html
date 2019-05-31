@@ -14,8 +14,8 @@
 
 function hasDuplicates(attacks) {
   let valuesSoFar = Object.create(null);
-  for (let i = 0; i < array.length; ++i) {
-      let value = JSON.stringify(array[i]);
+  for (let i = 0; i < attacks.length; ++i) {
+      let value = JSON.stringify(attacks[i]);
       if (value in valuesSoFar) {
           return true;
       }
