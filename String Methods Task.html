@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+
+
+    function substr (string, start, length) {
+
+      let resultString = "";
+
+      if(length === 0) {
+        return resultString;
+      }
+      if(length == undefined) {
+        for (let i = start; i < string.length; i++) {
+          resultString += string[i];
+        };  
+      } else {
+        for (let i = start; i < length + start; i++) {
+          resultString += string[i];
+        }
+      }  
+      return  resultString;
+    }
+
+    console.log(substr("stringify", 2, 4))
+    console.log("stringify".substr(2, 4))
+
+   function substring (string, start, end) {
+
+      let resultString = "";
+
+      if(start < 0) {
+        start = 0;
+      }
+      if (end < 0) {
+        end = 0;
+      }
+      if(start > end) {
+        for (let i = end; i < start; i++) {
+          resultString += string[i];
+        }
+      };
+      if(end == undefined) {
+        for (let i = start; i < string.length; i++) {
+          resultString += string[i];
+        }
+      };
+      for (let i = start; i < end; i++) {
+        resultString += string[i];
+      }
+        
+      return  resultString;
+    }
+  console.log(substring("testme", 2))
+  console.log("testme".substring(2))
+
+
+function endWith(wholeString, innerString, position) {
+
+  let checkString = '';
+
+  if (position == undefined){
+    for (let i = wholeString.length - innerString.length; i < wholeString.length; i++) {
+        checkString += wholeString[i];
+    };    
+  } else {
+    for (let i = position - innerString.length; i < position; i++) {
+        checkString += wholeString[i];
+    };
+  }
+  return  checkString === innerString;
+}
+
+let str = "Hello world, welcome to the universe.";
+console.log(endWith(str, "universe."))
+console.log(str.endsWith("universe."))
+
+
+function includes(wholeString, innerString, position = 0){
+
+  for(let i = position; i < wholeString.length; i++) {
+      if(wholeString[i] !== innerString[0]){
+        continue;
+      };  
+      if(substring(wholeString, i, i + innerString.length) === innerString) {
+        return true;
+      } else {
+        continue;
+      };
+  };
+  return false;
+}
+
+console.log(includes('Непозбувна бентега', 'бентега'))
+console.log('Непозбувна бентега'.includes('бентега'))
+
+function indexof(wholeString, innerString, position = 0){
+
+  if(!includes(wholeString, innerString, position)) {
+    return -1;
+  };
+
+  for(let i = position; i < wholeString.length; i++) {
+    if(wholeString[i] === innerString[0]) {
+      if(substring(wholeString, i, i + innerString.length) === innerString) {
+        return i;
+      } else {
+        continue;
+      }
+    }
+  }
+}
+
+console.log(indexof('Непозбувна бентега', 'ентега'))
+console.log('Непозбувна бентега'.indexOf('ентега')); 
+
+
+function lastIndexof(wholeString, innerString, position){
+
+  let tempString = wholeString;
+  let arr = [];
+
+  if(innerString === '' && position == undefined) {
+    return wholeString.length
+  } else {
+    return position;
+  }
+  if(!includes(wholeString, innerString, position)) {
+    return -1;
+  };
+  if(position < 0) {
+     position = 0;
+  }
+  if(position === 0) {
+    tempString = tempString[0];
+  }
+  if(position !== undefined) {
+     tempString = substring(tempString, 0, tempString.length - position)
+  }
+
+  for(let i = 0; i < tempString.length; i++) {
+    if(tempString[i] === innerString[0]) {
+      if(substring(tempString, i, i + innerString.length) === innerString) {
+        arr.push(i);
+      } else {
+      continue;
+      }
+    }
+  }
+  return arr.length > 0 ? arr[arr.length-1] : -1;
+}
+
+console.log(lastIndexof('canal', '', 3));
+console.log('canal'.lastIndexOf('', 3));
+
+function trim(string) {
+
+  let resultString = '';
+
+  for (let i = 0; i <string.length; i++) {
+    if(string[i] !== " ") {
+      resultString = substring(string, i, string.length);
+      break;
+    }      
+  };
+  for (let i = resultString.length; i >= 0; i--) {
+    if(resultString[i] !== " ") {
+      resultString = substring(resultString, 0, i);
+      break;
+    };      
+  };
+  return resultString;
+}
+
+console.log(trim('   Hello world!   '))
+console.log('   Hello world!   '.trim());
+
+
+function split(wholeString, separator, position) {
+
+  let result = [];
+
+  function inner (wholeString, separator, position) {
+
+    if(!includes(wholeString, separator, position) && separator !== '') {
+      result.push(wholeString)
+    };
+
+    for (let i = 0; i < wholeString.length; i++) {
+      if(separator === '') {
+        result.push(wholeString[i])
+      };
+      if(wholeString[i] === separator) {
+        result.push(substring(wholeString, 0 , i));
+        return inner(substring(wholeString, i + 1 , wholeString.length), separator, position)
+      } else {
+        continue;
+      }
+    }
+    if(position !== undefined){
+      result.length = position;
+    }
+    return result;
+    }
+  return inner (wholeString, separator, position)
+}
+
+let monthString = ',Jan,Feb,Mar,';
+console.log(split(monthString, ''))
+console.log(monthString.split(''))
+
+</script>
+
+</body>
+</html>
