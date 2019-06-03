@@ -216,6 +216,39 @@ let monthString = ',Jan,Feb,Mar,';
 console.log(split(monthString, ''))
 console.log(monthString.split(''))
 
+
+function convertToLowerCase(str) {
+      let result = ''
+
+      for (let i = 0; i < str.length; i++) {
+        let code = str.charCodeAt(i)
+        if (code > 64 && code < 91) {
+          result += String.fromCharCode(code + 32)
+        } else {
+          result += str.charAt(i)
+        }
+      }
+      return result
+    }
+
+  console.log(convertToLowerCase('SBC'))
+
+  
+  function convertToUpperCase(str) {
+      let result = ''
+
+      for (let i = 0; i < str.length; i++) {
+        let code = str.charCodeAt(i)
+        if (code < 64 || code > 91) {
+          result += String.fromCharCode(code - 32)
+        } else {
+          result += str.charAt(i)
+        }
+      }
+      return result
+    }
+
+console.log(convertToUpperCase('abc'))
 </script>
 
 </body>
