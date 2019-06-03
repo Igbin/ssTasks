@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>nacci sequences</title>
+</head>
+<body>
+<script>
+
+
+
+function sequencesCalc(arr, n) {
+
+  if (arr.length < 1 || n == 0) {
+    return [];
+  }
+
+  let result = [];
+  let count = 0;
+
+  let sequences = { 
+  fib :{calc : function (n) {  
+          let fibonacci = [0, 1];
+          if(n==1 || n==2) {
+            return fibonacci;
+          } else {
+            for (i = 2; i < n; i ++) {
+              fibonacci[i] = fibonacci[i-1] + fibonacci[i-2];
+            }
+          }   
+            return fibonacci; 
+          }, 
+        repeatsCount : 0,
+        },
+  pad :{calc : function(n) {
+          let padavan = [1,1,1];
+          if(n==1 || n==2 || n==3) {
+            return padavan;
+          } else {
+            for (i = 3; i < n; i++) {
+              padavan[i] = padavan[i-2] + padavan[i-3];
+            }
+          }
+            return padavan;
+          },
+        repeatsCount : 0,
+        }, 
+  jac :{calc : function(n) {
+          let jacobsthal = [0 , 1];
+          if(n==1 || n==2 ) {
+             return jacobsthal;
+          } else {
+            for (i = 2; i < n; i++) {
+              jacobsthal[i] = jacobsthal[i-1] + 2 * jacobsthal[i-2];
+            }
+          }
+          return jacobsthal;
+          },
+        repeatsCount : 0,
+        }, 
+  pel :{calc : function(n) {
+          let pell = [0 , 1];
+          if(n==1 || n==2 ) {
+            return pell;
+          } else {
+            for (i = 2; i < n; i++) {
+             pell[i] = 2 * pell[i-1] +  pell[i-2];
+            }
+          }
+          return pell;
+          },
+        repeatsCount : 0,
+       }, 
+  tri :{calc : function(n) {
+          let tribonacci = [0 , 1, 1];
+          if(n==1 || n==2 || n == 3) {
+           return tribonacci;
+          } else {
+           for (i = 3; i < n; i++) {
+            tribonacci[i] = tribonacci[i-1] +  tribonacci[i-2] + tribonacci[i-3];
+          }
+          }
+          return tribonacci;
+          },
+        repeatsCount : 0,
+       }, 
+  tet :{calc : function(n) {
+          let tetranacci = [0 , 0, 0, 1];
+          if(n==1 || n==2 || n == 3 || n == 4) {
+             return tetranacci;
+          } else {
+            for (i = 4; i < n; i++) {
+              tetranacci[i] = tetranacci[i-1] +  tetranacci[i-2] + tetranacci[i-3] + tetranacci[i-4];
+            }
+          }
+          return tetranacci;
+          },
+        repeatsCount : 0,
+       },
+  }
+
+
+
+  while(count <  n) {
+    for (let i = 0; i <arr.length; i++) {
+      for (let seq in sequences) {
+        if(arr[i] == seq && result.length < n) {
+          result.push(sequences[seq].calc(n)[sequences[seq].repeatsCount]);
+          sequences[seq].repeatsCount++; 
+        } 
+      }
+    }
+    count ++;
+  }
+
+  return result;
+}
+
+console.log(sequencesCalc(['jac', 'jac', 'pel'],10))
+</script>
+
+
+
+
+
+</body>
+</html>
