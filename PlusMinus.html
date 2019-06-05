@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+ <script>
+
+function plusMinus(arr, n) {
+
+  function result(arr) {
+  let result = `${arr.map((el, i) =>{
+      if(el > 0 && i > 0) {
+        return el =` + ${el} `
+      } else {
+        return el
+      }
+      })} = ${n}`;
+      return result.replace(/,/g, '');
+  }
+
+  if(arr.reduce((acc, cur) => {return acc + cur}) === n) {
+    return result(arr);
+  }
+  if(arr.reduce((acc, cur) => {return Math.abs(acc)*-1 + Math.abs(cur)*-1}) === n) {
+    return result(arr);
+  }
+  
+  for (let i = 1; i < arr.length; i++) {
+    arr[i] = - arr[i];
+    if(arr.reduce((acc, cur) => {return acc + cur}) === n) {
+      return result(arr);
+    } 
+    arr[i] = Math.abs(arr[i])
+  }
+
+function inner(arr, n, sep) {
+
+  if(sep == arr.length) {
+    return false;
+  }
+
+  sep > 1 ? arr[sep] = Math.abs(arr[sep])*-1 : arr[sep] = Math.abs(arr[sep]);
+
+  for(let i = sep > 1 ? sep + 1 : 1; i <arr.length; i++) {
+    arr[i] = - arr[i];
+    for (let j = i + 1; j < arr.length; j++){
+      arr[j] = - arr[j];
+      if(arr.reduce((acc, cur) => {return acc + cur}) === n) {
+      return result(arr);
+      } 
+      arr[j] = Math.abs(arr[j]);
+    }
+    arr[i] = Math.abs(arr[i]);
+  }
+
+  for(let j =  sep > 1 ? sep + 1 : 1; j < arr.length; j++) {
+    arr = arr.map((el, k) =>{
+      if(k <= j && k > 0) {
+         return el = -el;
+       } else {
+         return el = el;
+       }
+    })
+
+    if(arr.reduce((acc, cur) => {return acc + cur}) === n) {
+      return result(arr);
+    } 
+    arr = arr.map(el => {return Math.abs(el)})
+    sep > 1 ? arr[sep] = Math.abs(arr[sep])*-1 : arr[sep] = Math.abs(arr[sep]);
+  }
+
+  return inner(arr, n , sep + 1)
+}
+return inner(arr, n, 1)
+
+}
+
+console.log(plusMinus([1, 15, 3, 12, 5, 10], -4))
+ </script> 
+</body>
+</html>
