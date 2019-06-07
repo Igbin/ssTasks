@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<script>
+  function quipu (str) {
+
+let result = '';
+
+function toNums(str) {
+  let num = 0, zeros = 1;
+
+  for(let i = 0; i < str.length; i++) {
+    if(str[i] =='@'  && zeros == 1){
+      num++;
+      continue;
+    } 
+    if(str[i] =='@'  && zeros > 1){
+      result += '0'.repeat(zeros - 1);
+      zeros = 1;
+      num++;
+      continue;
+    } 
+    if(str[i] =='~' &&  str[i-1] !='~' && num != 0){
+      result += num;
+      num = 0;
+      continue;
+    }
+   
+    if(str[i] =='~' &&  str[i-1] =='~'){
+      zeros++;
+      continue;
+    }
+    if(str[i] != "~" && str[i] != '@' && zeros > 1) {
+      result += '0'.repeat(zeros - 1);
+      zeros = 1;
+      result += str[i]
+      continue;
+    }  
+    if(str[i] != "~" && str[i] != '@' &&  num != 0) {
+      result += num;
+      num = 0;
+      result += str[i]
+      continue;
+    }  
+    if(str[i] != "~" && str[i] != '@') {
+      result += str[i];
+      continue;
+    }  
+  }
+  if(num > 0) {
+   result += num;
+  }
+  if(zeros > 1) {
+    result += '0'.repeat(zeros - 1);
+  }
+
+  console.log(result)
+  result = toSymb(String(eval(result)));
+
+  return result;
+ 
+}
+  function toSymb(str) {
+    let zeros = 0;
+    let resultString = ''
+
+    for(let i = 0; i < str.length; i++) {
+
+      if(str[i] > 0 && zeros == 0) {
+        resultString += '@'.repeat(+str[i]) 
+      }
+      if(str[i] > 0 && zeros > 0) {
+        resultString += '~'.repeat(zeros+1) 
+        resultString += '@'.repeat(+str[i]) 
+      }
+      if(str[i] == 0 && str[i-1] != 0) {
+        resultString += '~' 
+      }
+      if(str[i] == 0 && str[i-1] == 0) {
+        zeros++;
+      }
+    }
+    return resultString;
+  }
+
+ toNums(str); 
+
+return String(result);
+
+}
+
+console.log(quipu('@~~~~@+@~@@'))
+
+</script>
+
+
+</body>
+</html>
