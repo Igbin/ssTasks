@@ -8,69 +8,74 @@ function checkArguments(array) {
   if(!Array.isArray(array)) {
     error.reason = 'argument must be array';
   } else {
-    array.forEach(obj=>{
-      if (obj.constructor !== Object  ) {
-         error.reason = 'argument must be array of objects';
-      } else if(Object.values(obj).length < 4){
-        error.reason = 'each triangle must have name and three sides';
-      } else if(Math.sign(parseFloat(obj.a, 10)) != 1 || Math.sign(parseFloat(obj.b, 10)) != 1 || Math.sign(parseFloat(obj.c, 10)) != 1){
-        error.reason = 'sides must be positive numbers';
-      }
+    array.forEach(obj=>{   
+      let a = +Object.values(obj)[1];
+      let b = +Object.values(obj)[2];
+      let c = +Object.values(obj)[3];
+      if (obj.constructor !== Object  || Object.values(obj).length < 4) {
+         error.reason = 'argument must be array of objects with name and three sides';
+      } else if(Object.keys(obj)[1] !== obj.vertices[0].toLowerCase() || 
+                Object.keys(obj)[2] !== obj.vertices[1].toLowerCase() ||
+                Object.keys(obj)[3] !== obj.vertices[2].toLowerCase()) {     
+                error.reason = 'sides must be named like vertice';
+      } else if(isNaN(parseFloat(a, 10))  || isNaN(parseFloat(b, 10)) || isNaN(parseFloat(c, 10)) 
+                || !isFinite(a) || !isFinite(b) || !isFinite(c) 
+                || a < 0 || b < 0 || c < 0) {
+                error.reason = 'sides must be positive numbers';
+      } else if(!(a + b > c) || !(a + c > b) || !(b + c > a)){
+               error.reason = 'the summ of two sides must be above third side';           
+        } 
     })
   } 
-  return error.reason ? JSON.stringify(error) : true;  
+  return error.reason ? error : true;  
 }
 
 
-function findSquares(arr) {
-
-  let triangles = {};
-
-  arr.forEach(triangle => {
-    let p = (parseFloat(triangle.a, 10) + parseFloat(triangle.b, 10) + parseFloat(triangle.c, 10)) / 2;
-    let area =  Math.sqrt(p*(p - parseFloat(triangle.a, 10))*(p - parseFloat(triangle.b, 10))*(p - parseFloat(triangle.c, 10)));
-    triangles[triangle.vertices] = area;
-  })
-
-  return triangles;
+function findArea(obj) {
+    let a = +Object.values(obj)[1];
+    let b = +Object.values(obj)[2];
+    let c = +Object.values(obj)[3];
+    let p = (a + b + c) / 2;
+    let area =  Math.sqrt(p * (p - a) * (p - b) * p - (c));
+    return area;
 }
 
 
 function compareTraingles (arr) { 
 
   if(checkArguments(arr) !== true) {
-    return checkArguments(arr)
+    return checkArguments(arr) 
   }
 
-  let result = [];
-  let triangles = findSquares(arr);
-  let areasArr = Object.values(triangles).sort((b,a) => a - b);
-  const length = areasArr.length;
-  
-  for (let i = 0; i < length; i++){
-    for(let triangle in triangles) {
-      if(triangles[triangle] === areasArr[i]) 
-        result.push(triangle);
-    }
-  } 
+  arr = arr.map(obj => {
+        return obj =  {vertices: obj.vertices,
+                       area: findArea(obj)}
+        });
 
-  return result.join();  
+  arr.sort((a, b) => b.area - a.area);
+
+  arr = arr.map(obj => {
+        return obj = obj.vertices;
+        })
+
+  return arr;  
 }
+
 
 
   let traingleArr = [
     {vertices: 'ABC',
-      a: '200g',
-      b: 200,
-      c: 223},
+      a: 20,
+      b: 20,
+      c: 22},
     {vertices: 'DEF',
-      a: 200,
-      b: 200,
-      c: 223.35},
+      d: 200,
+      e: 200,
+      f: 223.35},
     {vertices: 'GHI',
-      a: 24,
-      b: 26,
-      c: 26.36}
+      g: 24,
+      h: 26,
+      i: 26.36}
   ]
 
 console.log(compareTraingles(traingleArr))

@@ -6,11 +6,13 @@ function checkArguments(context) {
   }
 
   if(Object.prototype.toString.call(context) !== '[object Object]') {
-    error.reason = 'argument must be object context';
-  } else if (Object.values(context).length < 2 || !context.max || !context.min) {
-       error.reason = 'object context mast have min and max value';
+     error.reason = 'argument must be object context';
+  } else if (Object.values(context).length < 2 || typeof(context.max) === 'undefined' || typeof(context.min) === 'undefined') {
+             error.reason = 'object context mast have min and max value';
+  } else if (typeof(context.min) !== 'string' || typeof(context.max) !== 'string') {
+            error.reason = 'min and max must be in strings format';
   } else if(!isFinite(+context.min) || !isFinite(+context.max) || String(context.min).length != 6 || String(context.max).length != 6) {
-      error.reason = 'min and max must be number of 6 digits';
+             error.reason = 'min and max must be number of 6 digits';
   }
 
   return error.reason ? error : true;  
@@ -22,8 +24,8 @@ function isHappyEasy(ticket) {
   
   ticket = String(ticket);
 
-  // let left = +ticket[0] + +ticket[1] + +ticket[2];
-  // let right = +ticket[3] + +ticket[4] + +ticket[5];
+  let left = +ticket[0] + +ticket[1] + +ticket[2];
+  let right= +ticket[3] + +ticket[4] + +ticket[5];
 
   let leftPart = ticket.split('').slice(0, ticket.length/2).reduce((acc, cur) => +acc + +cur);
   let rightPart = ticket.split('').slice(ticket.length/2, ticket.length).reduce((acc, cur) => +acc + +cur);
@@ -41,8 +43,8 @@ function isHappyHard(ticket) {
 
   let odds = 0, evens = 0;
 
-  ticket.split('').forEach((el, i) => {
-    if(i % 2 === 0) {
+  ticket.split('').forEach((el) => {
+    if(el % 2 === 0) {
       evens += +el
     } else {
       odds += +el
@@ -74,6 +76,7 @@ function compareHappyTickets(context) {
       hardTickets++;
   });
 
+
   if(eassyTickets > hardTickets) {
     result.winner = 'easy way';
   } else if(eassyTickets < hardTickets) {
@@ -88,8 +91,8 @@ function compareHappyTickets(context) {
 }
   
 let context = {
-  min: 100000,
-  max: 200000
+  min: '000001',
+  max: '999999'
 }
 
 console.log(compareHappyTickets(context))
