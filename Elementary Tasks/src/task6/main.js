@@ -1,23 +1,5 @@
-function checkArguments(n, m) {
-
-  let error = {
-    status: 'failed',
-    reason: ''
-  }
-
-  if(!n || !m) {
-    error.reason = 'arguments must be length row and min square number';
-  } else if(!isFinite(+n) || !isFinite(+m) || +n < 1 || +m < 1 ) {
-    error.reason = 'length row and min square number must be positive numbers';
-  }
-
-  return error.reason ? error : true;  
-}
-
-
 function squaresRow(n, m) {
-
-  if(checkArguments(n, m) !== true) {
+  if(checkArguments(n, m)) {
     return checkArguments(n, m) 
   }
 
@@ -33,7 +15,25 @@ function squaresRow(n, m) {
   return result.slice(0, -2);
 }
 
-console.log(squaresRow(10, '100.1'))
+function checkArguments(n, m) {
+  let error = {
+    status: 'failed',
+    reason: ''
+  }
+
+  if(!n || !m) {
+    error.reason = 'arguments must be length row and min square and bigger than 0';
+  } else if(typeof(n) !== 'number' || typeof(m) !== 'number' || +n < 0 || +m < 0) {
+    error.reason = 'length row and min square number must be positive numbers';
+  }
+
+  return error.reason ? error : false;  
+}
+
+
+
+
+console.log(squaresRow(10, 100))
 
 
   

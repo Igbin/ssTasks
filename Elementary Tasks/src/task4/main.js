@@ -1,14 +1,36 @@
-function checkArguments(number) {
+function findPalindrome(number) {
+  if(checkArguments(number)) {
+    return checkArguments(number);
+  }
 
+  let num = String(number),
+      length = num.length;
+
+  if(isPalindorme(num)) {
+    return num.length > 1 ? num : 0;
+  }
+
+  for (let i = 0; i < length; i++) {
+    for (let j = length; j >=2; j--) {
+      if(isPalindorme(num.substring(i, i + j))) {
+        return num.substring(i, i + j).length > 1 ? num.substring(i, i + j) : 0;
+      }
+    }
+  }
+}
+
+
+function checkArguments(number) {
   let error = {
     status: 'failed',
     reason: ''
   }
 
-  if(!number ||  isNaN(parseInt(number, 10)) || parseInt(number, 10) < 9) {
-    error.reason = 'argument must be number above 9';
+  if(!number || typeof(number) !== 'number') {
+    error.reason = 'argument must be positive number';
   }
-  return error.reason ? error : true;  
+  
+  return error.reason ? error : false;  
 }
 
 
@@ -17,29 +39,4 @@ function isPalindorme(number) {
 }
 
 
-function findPalindrome(number) {
-
-  if(checkArguments(number) !== true) {
-    return checkArguments(number);
-  }
-
-  let result = [];
-  let num = String(parseInt(number, 10));
-  let length = num.length;
-
-  if(isPalindorme(num)) {
-    return num;
-  }
-
-  for (let i = 0; i < length; i++) {
-    for (let j = 2; j < length; j++) {
-      if(isPalindorme(num.substring(i, i + j))) {
-         result.push(+num.substring(i, i + j))
-      }
-    }
-  }
-  return result.sort((a,b) => {return b - a})[0] || 0;
-}
-
-
-console.log(findPalindrome())
+console.log(findPalindrome(123215))

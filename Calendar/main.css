@@ -1,0 +1,94 @@
+#calendar {
+  width: 320px;
+  background-color: #464646;
+  color: #fff;
+  padding: 15px;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.cal-header {
+  margin-bottom: 10px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #6d7d8a; 
+}
+
+.cal-header_watch {
+  font-size: 46px;
+}
+
+.cal-header_date {
+  color: #0077df;
+  display: inline;
+}
+
+.cal-header_date:hover {
+  color: #6d7d8a
+}
+
+.cal-nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width:97%;
+  margin: 0 auto;
+}
+
+.month-name {
+  font-size: 15px;
+  margin: 15px auto 0;
+}
+
+.btn {
+  outline: none;
+  border: none;
+  color: #fff;
+  background: none;
+  font-size: 35px;
+  cursor: pointer;
+}
+
+.cal-days, .day-names {
+  width:105%;;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  font-size: 15px;
+}
+
+.day-names {
+  font-size: 12px;
+}
+
+.prev-month, .cur-month, .next-month, .day-names > div{
+  box-sizing: border-box;
+  width: 13%;
+  height: 40px;
+  text-align: center;
+  vertical-align: bottom;
+  margin: 1px 1px;
+  line-height: 38px;
+  border: 2px solid #464646;
+}
+
+.cur-month:not(.today):hover {
+background-color: #575757;
+}
+
+.prev-month, .next-month {
+  color: #6d7d8a;
+}
+
+.today {
+  background-color:  #0077df;
+}
+
+.today-active {
+  outline: 2px solid black;
+  outline-offset: -4px;
+}
+
+.active {
+  color: white;
+  border: #0077df 2px solid;
+}
+
