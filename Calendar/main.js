@@ -1,8 +1,9 @@
 function createCalendar (){
   const monthes = ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"];
   const dayNames = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'];
-  let calText = '',
-      pageDate;
+  let calText = [],
+      pageDate,
+      todayIs = false;
 
   createCalHeader(); 
   createDays(new Date(new Date().getFullYear(), +new Date().getMonth()));
@@ -17,13 +18,13 @@ function createCalendar (){
     document.querySelector('.cal-header_date').innerHTML = `${dayNames[+new Date().getDay()-1]},
     ${new Date().getDate()} ${monthes[+new Date().getMonth()].slice(0, -1)}я ${new Date().getFullYear()} г.`;
 
-    Array.from(document.getElementsByClassName('month-switch')).forEach(el => {
+    Array.from(document.querySelectorAll('.month-switch')).forEach(el => {
       el.addEventListener('click', () => {
-         switchMonth(el.id)
+         switchMonth(el.classList[el.classList.length-1])
        })
      });
    
-     Array.from(document.getElementsByClassName('day-switch')).forEach(el => {
+     Array.from(document.querySelectorAll('.day-switch')).forEach(el => {
        el.addEventListener('click', switchDay)
      });
   }
@@ -42,30 +43,35 @@ function createCalendar (){
         cellsCount = 0;
 
     for (let i = 0; i < dayOfWeekFirstDay; i++) {
-        calText += `<div class = "prev-month">${(+lastDayOfPrevMonth - dayOfWeekFirstDay + 1 + i)}</div>`;
+        calText.push(`<div class = "prev-month">${(+lastDayOfPrevMonth - dayOfWeekFirstDay + 1 + i)}</div>`);
         cellsCount++;
     }
 
     while (cellsCount != 42) {
           if(dateOfFirstDay.getMonth() == currPageMonth) {
-            calText += `<div class = "cur-month">${dateOfFirstDay.getDate()}</div>`;
+            calText.push(`<div class = "cur-month">${dateOfFirstDay.getDate()}</div>`);
           } else {
-            calText += `<div class = "next-month">${dateOfFirstDay.getDate()}</div>`;
+            calText.push(`<div class = "next-month">${dateOfFirstDay.getDate()}</div>`);
           }
           dateOfFirstDay.setDate(dateOfFirstDay.getDate() + 1);
           cellsCount++;
     }
 
-    document.querySelector('.cal-days').innerHTML = calText;
+
     document.querySelector('.month-name').innerHTML = `${monthes[currPageMonth]} ${date.getFullYear()} г.`;
     pageDate = date;
   
-    Array.from(document.getElementsByClassName('cur-month')).forEach(el =>{  
-      if(el.innerHTML == new Date().getDate() && new Date().getMonth() == pageDate.getMonth()
+    calText = calText.map(el =>{  
+      if(el == `<div class = "cur-month">${new Date().getDate()}</div>` && new Date().getMonth() == pageDate.getMonth()
          && new Date().getFullYear() == pageDate.getFullYear()) {
-         el.classList.add('today', 'active' , 'today-active');
+         todayIs = true;  
+         return el = `<div class = "cur-month today active today-active">${new Date().getDate()}</div>`
+      } else {
+        return el;
       }
     })
+ 
+    document.querySelector('.cal-days').innerHTML = calText.join('');
 
     Array.from(document.querySelector('.cal-days').children).forEach(el =>{
       el.addEventListener('click', clickDay)
@@ -81,7 +87,7 @@ function createCalendar (){
 
 
   function switchMonth(action) {
-    calText = '';
+    calText = [];
 
     if(action == 'goNextMonth') {
       createDays(new Date(pageDate.getFullYear(), +pageDate.getMonth()+1))
@@ -91,15 +97,15 @@ function createCalendar (){
       document.querySelector('.cal-days').lastChild.classList.add('active')
     }
 
-    document.getElementsByClassName('today')[0] ? document.getElementsByClassName('today')[0].classList.remove('today-active', 'active') : false;
+    document.querySelector('.today') ? document.querySelector('.today').classList.remove('today-active', 'active') : false;
   }
 
 
   function switchDay() {
-    let curActive =  document.getElementsByClassName('active')[document.getElementsByClassName('active').length-1],
-        prevActive = document.getElementsByClassName('active')[0];
+    let curActive =  document.querySelectorAll('.active')[document.querySelectorAll('.active').length-1],
+        prevActive = document.querySelector('.active');
 
-    document.getElementsByClassName('today')[0] ? document.getElementsByClassName('today')[0].classList.remove('today-active', 'active') : false;
+    document.querySelector('.today') ? document.querySelector('.today').classList.remove('today-active', 'active') : false;
 
     if(this.classList.contains('btn-nextday')) {
       if(!curActive.nextSibling) {
